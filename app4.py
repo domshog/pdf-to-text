@@ -3,28 +3,12 @@ import os
 import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
-import requests
-import shutil
-import tempfile
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
-# Function to download the Tesseract executable
-def download_tesseract_executable():
-    url = 'https://github.com/domshog/pdf-to-text/raw/main/tesseract/tesseract.exe'
-    r = requests.get(url, stream=True)
-    with open('tesseract.exe', 'wb') as f:
-        shutil.copyfileobj(r.raw, f)
-
-# Set the path to the Tesseract executable
-def set_tesseract_executable():
-    with tempfile.TemporaryDirectory() as temp_dir:
-        tesseract_path = os.path.join(temp_dir, 'tesseract.exe')
-        if not os.path.exists(tesseract_path):
-            download_tesseract_executable()
-            shutil.move('tesseract.exe', tesseract_path)
-        pytesseract.pytesseract.tesseract_cmd = tesseract_path
+# Set the path to the Tesseract executable (relative path)
+TESSERACT_EXECUTABLE_PATH = os.path.join(os.path.dirname(__file__), 'tesseract.exe')
 
 # Function to check allowed file extensions
 def allowed_file(filename):
@@ -49,7 +33,8 @@ def extract_text(pdf_file):
 def main():
     st.title("PDF Text Extractor")
     
-    set_tesseract_executable()
+    # Set the path to the Tesseract executable
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_EXECUTABLE_PATH
 
     uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
     
