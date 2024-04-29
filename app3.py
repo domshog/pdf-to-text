@@ -10,7 +10,7 @@ ALLOWED_EXTENSIONS = {'pdf'}
 
 # Function to download the Tesseract executable
 def download_tesseract_executable():
-    url = 'https://github.com/your_username/your_repository/raw/main/tesseract/tesseract.exe'  # Update with your GitHub repository URL
+    url = 'https://github.com/domshog/pdf-to-text/tree/main/tesseract/tesseract.exe'  # Update with your GitHub repository URL
     r = requests.get(url)
     with open('tesseract.exe', 'wb') as f:
         f.write(r.content)
