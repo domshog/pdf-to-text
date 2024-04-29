@@ -8,7 +8,7 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
 # Set the path to the Tesseract executable (absolute path)
-TESSERACT_EXECUTABLE_PATH = '/mount/src/pdf-to-text/tesseract.exe'
+TESSERACT_EXECUTABLE_PATH = 'git clone https://github.com/tesseract-ocr/tesseract tesseract'
 
 # Function to check allowed file extensions
 def allowed_file(filename):
