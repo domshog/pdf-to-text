@@ -8,7 +8,7 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
 # Set the path to the Tesseract executable (absolute path)
-TESSERACT_EXECUTABLE_PATH = 'https://github.com/tesseract-ocr/tesseract/blob/main/.github/workflows/unittest.yml'
+TESSERACT_EXECUTABLE_PATH = '/usr/bin/tesseract'
 
 # Function to check allowed file extensions
 def allowed_file(filename):
