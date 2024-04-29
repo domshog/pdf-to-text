@@ -2,3 +2,4 @@ Flask
 pytesseract
 pdf2image
 PyMuPDF
+google-cloud-vision
