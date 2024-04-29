@@ -3,26 +3,9 @@ import os
 import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
-import requests
-import shutil
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
-
-# Function to download the Tesseract executable
-def download_tesseract_executable():
-    url = 'https://github.com/domshog/pdf-to-text/tree/main/tesseract/tesseract.exe'  # Update with your GitHub repository URL
-    r = requests.get(url)
-    with open('tesseract.exe', 'wb') as f:
-        f.write(r.content)
-
-# Check if the Tesseract executable exists, if not, download it
-if not os.path.exists('tesseract.exe'):
-    st.info("Downloading Tesseract executable...")
-    download_tesseract_executable()
-
-# Set the path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = os.path.abspath('tesseract.exe')
 
 # Function to check allowed file extensions
 def allowed_file(filename):
