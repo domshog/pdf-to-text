@@ -8,7 +8,10 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
 # Path to the Tesseract executable
-TESSERACT_EXECUTABLE_PATH = 'https://github.com/domshog/pdf-to-text/tree/main/tesseract/tesseract.exe'  # Update with the path to your Tesseract executable
+TESSERACT_EXECUTABLE_PATH = './tesseract.exe'  # Update with the path to your Tesseract executable
+
+# Set the path to the Tesseract executable
+pytesseract.pytesseract.tesseract_cmd = TESSERACT_EXECUTABLE_PATH
 
 # Function to check allowed file extensions
 def allowed_file(filename):
@@ -23,7 +26,7 @@ def extract_text(pdf_file):
                 page = doc.load_page(page_num)
                 image_list = page.get_pixmap(alpha=False)
                 img = Image.frombytes("RGB", [image_list.width, image_list.height], image_list.samples)
-                text = pytesseract.image_to_string(img, config='--psm 6', executable=TESSERACT_EXECUTABLE_PATH)
+                text = pytesseract.image_to_string(img, config='--psm 6')
                 text_output.append(text)
     except Exception as e:
         st.error(f"Error extracting text: {e}")
