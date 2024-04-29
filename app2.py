@@ -1,6 +1,8 @@
 import streamlit as st
 import os
 import fitz  # PyMuPDF
+import pytesseract
+from PIL import Image
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -16,7 +18,9 @@ def extract_text(pdf_file):
         with fitz.open(pdf_file) as doc:
             for page_num in range(len(doc)):
                 page = doc.load_page(page_num)
-                text = page.get_text()
+                image_list = page.get_pixmap(alpha=False)
+                img = Image.frombytes("RGB", [image_list.width, image_list.height], image_list.samples)
+                text = pytesseract.image_to_string(img)
                 text_output.append(text)
     except Exception as e:
         st.error(f"Error extracting text: {e}")
