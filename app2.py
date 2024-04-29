@@ -20,11 +20,12 @@ def extract_text(pdf_file):
                 page = doc.load_page(page_num)
                 image_list = page.get_pixmap(alpha=False)
                 img = Image.frombytes("RGB", [image_list.width, image_list.height], image_list.samples)
-                text = pytesseract.image_to_string(img)
+                text = pytesseract.image_to_string(img, config="--tessdata-dir /path/to/tesseract")
                 text_output.append(text)
     except Exception as e:
         st.error(f"Error extracting text: {e}")
     return '\n'.join(text_output)
+
 
 def main():
     st.title("PDF Text Extractor")
