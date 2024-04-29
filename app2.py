@@ -1,6 +1,5 @@
 import streamlit as st
 import os
-
 import pytesseract
 from PIL import Image
 from pdf2image import convert_from_path
@@ -11,11 +10,11 @@ pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tessera
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
-# Function to check if the file extension is allowed
+st.set_page_config(page_title="PDF Text Extractor")
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-# Function to extract text from PDF
 def extract_text(pdf_file):
     pages = convert_from_path(pdf_file, 300)
     text_output = []
@@ -25,33 +24,21 @@ def extract_text(pdf_file):
     full_text = '\n'.join(text_output)
     return full_text
 
-# Main function to run the Streamlit app
 def main():
     st.title("PDF Text Extractor")
     
-    # Upload PDF file
-    uploaded_file = st.file_uploader("Choose a PDF file", type='pdf')
+    uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
     
     if uploaded_file is not None:
-        # Check if file extension is allowed
         if allowed_file(uploaded_file.name):
-            # Display file details
-            st.write('File uploaded:', uploaded_file.name)
-            
-            # Save the uploaded file temporarily
             file_path = os.path.join(UPLOAD_FOLDER, uploaded_file.name)
-            with open(file_path, 'wb') as f:
-                f.write(uploaded_file.getvalue())
-                
-            # Extract text from the PDF file
+            with open(file_path, "wb") as f:
+                f.write(uploaded_file.getbuffer())
             text_output = extract_text(file_path)
-            
-            # Display extracted text
-            st.header("Extracted Text:")
-            st.write(text_output)
+            st.subheader("Extracted Text:")
+            st.text_area("Text Output", text_output, height=400)
         else:
-            st.error("File type not supported. Please upload a PDF file.")
+            st.error("Please upload a PDF file.")
 
-# Run the main function
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
