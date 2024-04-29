@@ -1,1 +1,3 @@
-pip install Flask
+Flask
+pytesseract
+pdf2image
