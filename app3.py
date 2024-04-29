@@ -3,15 +3,26 @@ import os
 import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
+import requests
+import shutil
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
-# Path to the Tesseract executable
-TESSERACT_EXECUTABLE_PATH = 'https://github.com/domshog/pdf-to-text/tree/main/tesseract/tesseract.exe'  # Update with the path to your Tesseract executable
+# Function to download the Tesseract executable
+def download_tesseract_executable():
+    url = 'https://github.com/domshog/pdf-to-text/raw/main/tesseract/tesseract.exe'
+    r = requests.get(url, stream=True)
+    with open('tesseract.exe', 'wb') as f:
+        shutil.copyfileobj(r.raw, f)
+
+# Check if the Tesseract executable exists, if not, download it
+if not os.path.exists('tesseract.exe'):
+    st.info("Downloading Tesseract executable...")
+    download_tesseract_executable()
 
 # Set the path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = TESSERACT_EXECUTABLE_PATH
+pytesseract.pytesseract.tesseract_cmd = os.path.abspath('tesseract.exe')
 
 # Function to check allowed file extensions
 def allowed_file(filename):
@@ -26,7 +37,7 @@ def extract_text(pdf_file):
                 page = doc.load_page(page_num)
                 image_list = page.get_pixmap(alpha=False)
                 img = Image.frombytes("RGB", [image_list.width, image_list.height], image_list.samples)
-                text = pytesseract.image_to_string(img, config='--psm 6')
+                text = pytesseract.image_to_string(img)
                 text_output.append(text)
     except Exception as e:
         st.error(f"Error extracting text: {e}")
