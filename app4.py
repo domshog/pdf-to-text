@@ -7,6 +7,8 @@ from PIL import Image
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
+# Set the path to the Tesseract executable (absolute path)
+TESSERACT_EXECUTABLE_PATH = '/mount/src/pdf-to-text/tesseract.exe'
 
 # Function to check allowed file extensions
 def allowed_file(filename):
@@ -32,7 +34,7 @@ def main():
     st.title("PDF Text Extractor")
     
     # Set the path to the Tesseract executable
-    pytesseract.pytesseract.tesseract_cmd = tesseract
+    pytesseract.pytesseract.tesseract_cmd = TESSERACT_EXECUTABLE_PATH
 
     uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
     
