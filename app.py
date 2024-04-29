@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 from werkzeug.utils import secure_filename
 import os
-
+import streamlit as st
 import pytesseract
 from PIL import Image
 from pdf2image import convert_from_path
