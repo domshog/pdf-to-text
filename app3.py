@@ -16,13 +16,13 @@ def download_tesseract_executable():
     with open('tesseract.exe', 'wb') as f:
         shutil.copyfileobj(r.raw, f)
 
-# Check if the Tesseract executable exists, if not, download it
-if not os.path.exists('tesseract.exe'):
-    st.info("Downloading Tesseract executable...")
-    download_tesseract_executable()
-
 # Set the path to the Tesseract executable
-pytesseract.pytesseract.tesseract_cmd = os.path.abspath('tesseract.exe')
+def set_tesseract_executable():
+    tesseract_path = os.path.abspath('tesseract.exe')
+    if not os.path.exists(tesseract_path):
+        st.info("Downloading Tesseract executable...")
+        download_tesseract_executable()
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 # Function to check allowed file extensions
 def allowed_file(filename):
@@ -47,6 +47,8 @@ def extract_text(pdf_file):
 def main():
     st.title("PDF Text Extractor")
     
+    set_tesseract_executable()
+
     uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
     
     if uploaded_file is not None:
