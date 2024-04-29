@@ -1,8 +1,7 @@
 import streamlit as st
 import os
 import pytesseract
-from PIL import Image
-from pdf2image import convert_from_path
+import fitz  # PyMuPDF
 
 # Path to your Tesseract executable
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
@@ -16,14 +15,13 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def extract_text(pdf_file):
-    pages = convert_from_path(pdf_file, 300, poppler_path="/path/to/poppler")
     text_output = []
-    for page in pages:
-        text = pytesseract.image_to_string(page, lang='eng')
-        text_output.append(text)
-    full_text = '\n'.join(text_output)
-    return full_text
-
+    with fitz.open(pdf_file) as doc:
+        for page_num in range(len(doc)):
+            page = doc.load_page(page_num)
+            text = page.get_text()
+            text_output.append(text)
+    return '\n'.join(text_output)
 
 def main():
     st.title("PDF Text Extractor")
@@ -40,12 +38,6 @@ def main():
             st.text_area("Text Output", text_output, height=400)
         else:
             st.error("Please upload a PDF file.")
-
-
-
-
-
-
 
 if __name__ == "__main__":
     main()
