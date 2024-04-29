@@ -8,7 +8,8 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
 # Set the path to the Tesseract executable (relative path)
-TESSERACT_EXECUTABLE_PATH = os.path.join(os.path.dirname(__file__), 'tesseract')
+TESSERACT_EXECUTABLE_PATH = "/usr/bin/tesseract"
+
 
 # Function to check allowed file extensions
 def allowed_file(filename):
