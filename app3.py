@@ -4,6 +4,7 @@ import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
 import requests
+import shutil
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
