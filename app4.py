@@ -32,8 +32,7 @@ def main():
     st.title("PDF Text Extractor")
     
     # Set the path to the Tesseract executable
-    pytesseract.pytesseract.tesseract_cmd = tesseract --tessdata-dir /usr/share imagename outputbase -l eng --psm 3
-
+    pytesseract.pytesseract.tesseract_cmd = tesseract input.tiff output --oem 1 -l eng
 
     uploaded_file = st.file_uploader("Upload a PDF file", type="pdf")
     
