@@ -3,15 +3,28 @@ import os
 import fitz  # PyMuPDF
 import pytesseract
 from PIL import Image
+import requests
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
-st.set_page_config(page_title="PDF Text Extractor")
+# Function to download the Tesseract executable
+def download_tesseract_executable():
+    url = 'https://github.com/domshog/pdf-to-text/tree/main/tesseract/tesseract.exe'  # Update with your GitHub repository URL
+    r = requests.get(url)
+    with open('tesseract.exe', 'wb') as f:
+        f.write(r.content)
 
+# Check if the Tesseract executable exists, if not, download it
+if not os.path.exists('tesseract.exe'):
+    st.info("Downloading Tesseract executable...")
+    download_tesseract_executable()
+
+# Function to check allowed file extensions
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# Function to extract text from PDF
 def extract_text(pdf_file):
     text_output = []
     try:
@@ -20,13 +33,13 @@ def extract_text(pdf_file):
                 page = doc.load_page(page_num)
                 image_list = page.get_pixmap(alpha=False)
                 img = Image.frombytes("RGB", [image_list.width, image_list.height], image_list.samples)
-                text = pytesseract.image_to_string(img, config="--tessdata-dir /tesseract.exe")
+                text = pytesseract.image_to_string(img, config="--tessdata-dir ./")
                 text_output.append(text)
     except Exception as e:
         st.error(f"Error extracting text: {e}")
     return '\n'.join(text_output)
 
-
+# Main function
 def main():
     st.title("PDF Text Extractor")
     
