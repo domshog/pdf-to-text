@@ -5,6 +5,7 @@ import pytesseract
 from PIL import Image
 import requests
 import shutil
+import tempfile
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -18,11 +19,12 @@ def download_tesseract_executable():
 
 # Set the path to the Tesseract executable
 def set_tesseract_executable():
-    tesseract_path = os.path.abspath('tesseract.exe')
-    if not os.path.exists(tesseract_path):
-        st.info("Downloading Tesseract executable...")
-        download_tesseract_executable()
-    pytesseract.pytesseract.tesseract_cmd = tesseract_path
+    with tempfile.TemporaryDirectory() as temp_dir:
+        tesseract_path = os.path.join(temp_dir, 'tesseract.exe')
+        if not os.path.exists(tesseract_path):
+            download_tesseract_executable()
+            shutil.move('tesseract.exe', tesseract_path)
+        pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
 # Function to check allowed file extensions
 def allowed_file(filename):
