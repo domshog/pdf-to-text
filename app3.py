@@ -8,7 +8,7 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 
 # Path to the Tesseract executable
-TESSERACT_EXECUTABLE_PATH = './tesseract.exe'  # Update with the path to your Tesseract executable
+TESSERACT_EXECUTABLE_PATH = 'https://github.com/tesseract-ocr/tesseract.exe'  # Update with the path to your Tesseract executable
 
 # Set the path to the Tesseract executable
 pytesseract.pytesseract.tesseract_cmd = TESSERACT_EXECUTABLE_PATH
